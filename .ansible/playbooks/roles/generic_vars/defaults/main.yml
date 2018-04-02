@@ -1,0 +1,22 @@
+---
+cops_generic_back: testvar
+cops_generic_dir: "/srv/docker/generic"
+cops_generic_composename: "compose-genericapp"
+cops_generic_db_user: "secretJFCxwPHz99R9jIi"
+cops_generic_db_password: "secret4gzQNe3c8851VOJ"
+cops_generic_db_name: "generic"
+cops_generic_gitlab_token: "e992y2r799D2kVW"
+cops_generic_sshargs: >-
+  {% set k = hostvars[inventory_hostname].get(
+                'ansible_ssh_private_key_file', '') %}
+  {% if k%}-o IdentityFile={{k}} -o IdentitiesOnly=yes{%endif%}
+  {% if (
+      hostvars[inventory_hostname].ansible_connection|default('ssh')
+     ) not in [ 'smart', 'local'] %}
+  {{ hostvars[inventory_hostname].ssh_args | default('') }}
+  {{ hostvars[inventory_hostname].ansible_ssh_args | default('') }}
+  {{ hostvars[inventory_hostname].ansible_ssh_common_args | default('') }}
+  {{ hostvars[inventory_hostname].ansible_ssh_extra_args | default('') }}
+  {% endif %}
+cops_generic_build: true
+cops_generic_build_args: django

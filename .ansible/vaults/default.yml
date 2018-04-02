@@ -1,0 +1,4 @@
+---
+cops_generic_defaultvar: test2
+generic_servers: generic_servers
+# vim:set ft=sls:

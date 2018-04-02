@@ -1,0 +1,42 @@
+---
+- file:
+    state: directory
+    mode: "2751"
+    path: "{{item}}"
+  with_items:
+  - "{{cops_generic_dir}}"
+  - "{{cops_generic_dir}}/local/postgresql/data"
+  - "{{cops_generic_dir}}/local/backup"
+  - "{{cops_generic_dir}}/local/backup/data"
+  - "{{cops_generic_dir}}/local/backup/setup"
+- name: Synchronise files inside the environment (deleguation)
+  delegate_to: "localhost"
+  synchronize:
+    compress: false
+    ssh_args: "{{cops_generic_sshargs}}"
+    src: "../../../../../"
+    dest: "{{cops_generic_dir}}/"
+    rsync_opts: ["-azv", "--exclude", ".ansible", "--exclude", "local"]
+    #update_opts: '--recursive'
+- template:
+    src: "dbsmartbackup.yml"
+    dest: "{{cops_generic_dir}}/local/backup/setup/reconfigure.yml"
+    mode: "0640"
+    trim_blocks: false
+- template:
+    src: "docker.env"
+    dest: "{{cops_generic_dir}}/docker.env"
+    mode: "0640"
+    trim_blocks: false
+- shell: |
+    set -ex
+    cd "{{cops_generic_dir}}"
+    docker-compose build {{cops_generic_build_args}}
+  when: "cops_generic_build|copsf_asbool"
+- include_role: {name: corpusops.roles/docker_compose_service}
+  when: False
+  vars:
+    _docker_compose_service:
+      project: "{{cops_generic_composename}}"
+      working_directory: "{{cops_generic_dir}}"
+      docker_compose_file: "docker-compose-prod.yml"
