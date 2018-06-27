@@ -1,5 +1,4 @@
 # README
-- This is the deploy code branch: see [project branch](https://github.com/corpusops/setups.zope/tree/project/)
-- topics:
-    - [myproject corpusops docs](https://github.com/corpusops/corpusops.bootstrap/tree/master/docs/) <br/>
-      cloned (after install) in ``local/corpusops.bootstrap/docs/``
+ topics:
+    - [myproject corpusops docs](https://github.com/corpusops/corpusops.bootstrap/tree/master/docs/project) <br/>
+      cloned (after install) in ``local/corpusops.bootstrap/docs/project``
